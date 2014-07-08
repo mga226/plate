@@ -41,4 +41,5 @@ $plate->parseString('');
 
 $buffer = $plate->getBuffer();
 
-echo $buffer;```
+echo $buffer;
+```
