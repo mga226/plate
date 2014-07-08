@@ -192,9 +192,9 @@ class templateDirective_Data extends templateDirective{
 
 			return $dataPoint->runPlatelet( $this->args[0] )
 
-			$platelet = $this->data[$key]; 
 		} else {
-			$platelet = FALSE
+			
+			return $this->data->getDataOrPseudodata($this->key);
 		}
 
 		return $dataPoint->runPlatelet($this->text, $this->params, $this->args);
@@ -233,9 +233,29 @@ class Dataset{
 		$this->data = $data;
 
 	}
+	function getDataOrPeusdodata($key){
+		if($this->hasDatapoint($key){
+			return $this->getDatapoint($key);
+		} elseif($this->hasPseudodataMethod($key)) {
+			return $this->getPseudodata($key);
+		} else {
+			return FALSE;
+		}
+	}
+
 
 	function getDatapoint($key){
 		return $this->data[$key];
+	}
+
+	function hasDatapoint($key){
+		if(isset($this->data[$key]))
+			return TRUE;
+		else return FALSE;
+	}
+
+	function getPseudodata($key){
+		
 	}
 
 	function addDatapoint($key, $value, $options = FALSE, $class = FALSE){
