@@ -1,22 +1,32 @@
 <?php
 
-namespace Plate;
-
-require_once(realpath( dirname( __FILE__ ) ).'/../classes/Plate.php');
-require_once(realpath( dirname( __FILE__ ) ).'/../classes/Dataset.php');
-require_once(realpath( dirname( __FILE__ ) ).'/../classes/Datapoint.php');
-require_once(realpath( dirname( __FILE__ ) ).'/../classes/PlateDirective.php');
-require_once(realpath( dirname( __FILE__ ) ).'/../classes/PlateParser.php');
 
 
 
-class PlateTests extends \PHPUnit_Framework_Testcase
+require_once(__DIR__.'/../vendor/symfony/class-loader/Symfony/Component/ClassLoader/UniversalClassLoader.php');
+
+use \Symfony\Component\ClassLoader\UniversalClassLoader;
+ 
+$loader = new UniversalClassLoader();
+$loader->registerNamespace('Plate',__DIR__.'/..');
+$loader->register();
+
+
+//require 'PHPUnit/Autoload.php'; 
+
+//echo realpath(dirname(__FILE__)).'/../Plate';
+
+use Plate\Parser;
+use Plate\DatapointFactory;
+use Plate\Datapoint;
+
+class PlateTests extends PHPUnit_Framework_Testcase
 {
 
 	var $plate;
 
 	public function setUp(){
-		$this->plate = new Parser();
+		$this->plate = new Parser;
 	}
 	
 	public function tearDown(){
@@ -27,7 +37,7 @@ class PlateTests extends \PHPUnit_Framework_Testcase
 	{
 
 		$this->plate->setData(array('text'=>'Hello, World!'));
-		$this->assertTrue($this->plate->getData() instanceof Dataset);
+		$this->assertTrue($this->plate->getData() instanceof \Plate\Dataset);
 		
 	}
 
@@ -85,7 +95,7 @@ class PlateTests extends \PHPUnit_Framework_Testcase
 	{
 
 		$dp = DatapointFactory::create(TRUE);
-		$this->assertInstanceOf('Datapoint_Boolean', $dp);
+		$this->assertInstanceOf('\Plate\Datapoint\Boolean', $dp);
 
 	}
 
@@ -93,20 +103,20 @@ class PlateTests extends \PHPUnit_Framework_Testcase
 	{
 
 		$dp = DatapointFactory::create(123);
-		$this->assertInstanceOf('Datapoint_Number', $dp);
+		$this->assertInstanceOf('\Plate\Datapoint\Number', $dp);
 
 		$dp = DatapointFactory::create('123');
-		$this->assertInstanceOf('Datapoint_Number', $dp);
+		$this->assertInstanceOf('\Plate\Datapoint\Number', $dp);
 
 		$dp = DatapointFactory::create(123.4);
-		$this->assertInstanceOf('Datapoint_Number', $dp);
+		$this->assertInstanceOf('\Plate\Datapoint\Number', $dp);
 
 
 		$dp = DatapointFactory::create('123.4');
-		$this->assertInstanceOf('Datapoint_Number', $dp);
+		$this->assertInstanceOf('\Plate\Datapoint\Number', $dp);
 
 		$dp = DatapointFactory::create(0);
-		$this->assertInstanceOf('Datapoint_Number', $dp);
+		$this->assertInstanceOf('\Plate\Datapoint\Number', $dp);
 
 
 	}
@@ -115,7 +125,7 @@ class PlateTests extends \PHPUnit_Framework_Testcase
 	{
 
 		$dp = DatapointFactory::create('hello world');
-		$this->assertInstanceOf('Datapoint_String', $dp);
+		$this->assertInstanceOf('\Plate\Datapoint\String', $dp);
 
 	}
 
@@ -128,7 +138,7 @@ class PlateTests extends \PHPUnit_Framework_Testcase
 		);
 
 		$dp = DatapointFactory::create($dp);
-		$this->assertInstanceOf('Datapoint_Dataset', $dp);
+		$this->assertInstanceOf('\Plate\Datapoint\Dataset', $dp);
 
 	}
 
@@ -147,7 +157,7 @@ class PlateTests extends \PHPUnit_Framework_Testcase
 		);
 
 		$dp = DatapointFactory::create($dp);
-		$this->assertInstanceOf('Datapoint_Loopable', $dp);
+		$this->assertInstanceOf('\Plate\Datapoint\Loopable', $dp);
 
 	}
 

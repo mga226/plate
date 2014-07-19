@@ -55,14 +55,11 @@ define('PLATE_REGEX', '
 								|
 								{(?:[^{}\ ])+}
 							#)+	
-
 						)
 					)
 					(?P<single_params>\ ([^{}]|(?>{[^{}]*}))*)?
 				}
 			)
-			
-		
 			/x');
 
 
@@ -70,26 +67,133 @@ define('PLATE_REGEX', '
 $string  = 'Hello {world this="that" that="the-other"}. My name is {name}.';
 
 
-function extract_template_code($buffer){
-	preg_match_all(PLATE_REGEX, $buffer, $matches);
-	
-	/* not strictly necessary */
-	$allowed = array(
-		'single_tag',
-		'single_params',
-		'pair_tag',
-		'pair_params',
-		'pair_content'
-	);
+class PlateCallback{
 
-	//$matches = array_filter()
+	function run($match){
+		$directive = PlateDirectiveFactory::create($match);
+	}
 }
 
-//function remove_numeric_keys($val)
+class PlateDirectiveFactory{
+	static function create(Array $regexMatch){
+	
+		if( !empty($regexMatch['pair_tag']) ){
+			$tag = $regexMatch['pair_tag'];
+			$params = $regexMatch['pair_params'];
+			$text = !empty($regexMatch['pair_content']) $regexMatch['pair_content'] : FALSE;
+
+		} elseif ( !empty($regexMatch['single_tag']) ){
+			$tag = $regexMatch['single_tag'];
+			$params = $regexMatch['single_params'];
+			$text = FALSE;
+		} else {
+			throw new InvalidArgumentException('No tag provided.');
+		
+		}
+
+		$isPlugin = FALSE;
+
+		if($tag[0] == ':'){
+			$isPlugin = TRUE;
+			$tag = substr($tag, 1);
+		}
+
+		$params = $this->parseParams($params);
+
+		if($isPlugin){
+			return new PlateDirective_Plugin($tag, $params, $text);
+		} else {
+			return new PlateDirective_Data($tag, $params, $text);
+		}
+
+	}
+
+	protected function parseParams(String $params){
+		if(preg_match_all('/(?P<param>[\w:]+)\s*=\s*(["\']?)(?P<value>.*?)(\2)/',$params, $params)){
+			$params = array_combine($params['param'], $params['value']);
+		} else {
+			$params = array();
+		}
+
+		return $params;
+	}
+
+
+}
+
+
+abstract class PlateDirective {
+
+	private string $text;
+	private var $tag;
+	private array $params;
+
+	function __construct($tag, $params, $text){
+		$this->tag = $tag;
+		$this->params = $params;
+		$this->text = $text;
+	}
+
+	abstract function run();
+
+	public function getTag(){
+		return $this->tag;
+	}
+
+	public function getParams(){
+		return $this->params;
+	}
+
+	public function getText(){
+		return $this->text;
+	}
+
+}
+
+class PlateDirective_Data extends PlateDirective{
+
+
+	public function run($data){
+		$datapoint = $data->getDataOrPseudodata($this->getTag());
+		return $datapoint->processForTemplate( $this->getText(), $this->getParams() );
+	}
+}
+
+class PlateDirective_Plugin extends PlateDirective{
+
+	public function run($data, $bufferIn){
+		if(function_exists($this->getTag())){
+			call_user_func_array(
+				$this->getTag(), 
+				array( $this->getText(), $this->getParams() )
+			)
+		}
+	}
+
+}
+
+
+/*
+
+	WRITE THIS
+
+*/
+class PlateDirective_IfBlock extends PlateDirective{
+
+	private string $condition;
+
+	public function run($data){
+
+	}
+
+
+}
+
 
 
 function callback($match){
 	print_r($match);
+
 }
 
 $string = preg_replace_callback(PLATE_REGEX, 'callback', $string);

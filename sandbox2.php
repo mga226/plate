@@ -70,7 +70,7 @@
 
 $string  = 'Hello {world this="that" that="the-other"}. My name is {name}.';
 
-$string .= "{:plugin_name}This is in a plugin.{/:plugin_name}. This is {data} data with enclosed content {/data}.";
+$string .= "{:plugin_name}This is in a plugin.{/:plugin_name}. {This}single_with_params is {data} data with enclosed content {/data}.";
 
 function callback($match){
 	print_r($match);

@@ -8,7 +8,7 @@ class Parser{
 	protected $buffer;        // holds current content as it morphs during the parse
 	protected $regexCallback; // holds an instance of \Plate\RegexCallback
 
-	function __construct( ArrayAccess $dataset = null, $template = null){
+	function __construct( \ArrayAccess $dataset = null, $template = null){
 		
 		if($dataset){
 			$this->setData($dataset);
@@ -55,7 +55,7 @@ class Parser{
 		
 		$buffer = preg_replace_callback(
 				PLATE_REGEX, 
-				array($this->templateParser,'run'), 
+				array($this->regexCallback,'run'), 
 				$this->getBuffer()
 		);
 
@@ -93,3 +93,71 @@ class Parser{
 	}
 
 }
+
+
+
+			define('PLATE_REGEX', '
+			/
+		
+			# will never write a regex this complicated again
+			# (and will hopefully never have to revisit this one) -MGA
+		
+			(?P<pair>
+				{
+					(?P<pair_tag>
+						(
+							(?>
+								(?:[^{}\ ])+
+								|
+								{(?:[^{}\ ])+}
+							)+	
+						)
+					)
+					(?P<pair_params>\ ([^{}]|(?:
+					
+					
+						# single reproduced here
+					
+						{
+							(?:
+								(
+									#(?>
+										(?:[^{}\ ])+
+										|
+										{(?:[^{}\ ])+}
+									#)+
+		
+								)
+							)
+							(?:\ ([^{}]|(?>{[^{}]*}))*)?
+						}					
+					
+						# end of single reproduced
+					
+					))*)?
+				}
+				# (?P<pair_content>((?>pair) | (?>single) | [\s\S])*?)
+				# replaced with the following to circumvent catastrophic backtracking:
+				(?P<pair_content>((?>pair) | (?>single) | (?>[\s\S])*?))
+				{\/\3}
+			)
+			|
+			(?P<single>
+				{
+					(?P<single_tag>
+						(
+							#(?>
+								(?:[^{}\ ])+
+								|
+								{(?:[^{}\ ])+}
+							#)+	
+
+						)
+					)
+					(?P<single_params>\ ([^{}]|(?>{[^{}]*}))*)?
+				}
+			)
+			
+		
+			/x');
+			

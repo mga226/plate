@@ -1,5 +1,32 @@
 <?php
 
+require_once('vendor/symfony/class-loader/Symfony/Component/ClassLoader/UniversalClassLoader.php');
+
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+ 
+$loader = new UniversalClassLoader();
+$loader->registerNamespace('Plate',__DIR__);
+#$loader->registerNamespace("Symfony\Component" => "/path/to/symfony/components");
+#$loader->registerNamespace("Monolog" => "path/to/monolog/src/");
+#$loader->registerPrefix("Zend_", "path/to/zend/library");
+$loader->register();
+
+
+//
+$plate = new Plate\Parser();
+$plate->setTemplate('{title}');
+$plate->setData(array('title'=>'MyArray'));
+$plate->parse();
+echo $plate->getBuffer();
+#spl_autoload_extensions(".php");
+#spl_autoload_register();
+#use 
+
+
+
+
+
+/*
 require ('classes/Datapoint.php');
 require ('classes/Dataset.php');
 require ('classes/PlateParser.php');
@@ -25,3 +52,4 @@ $plate = new Plate($set, '{numberOfFields} Title is {title}, content is {content
 $plate->parse();
 
 echo $plate->getBuffer();
+*/
