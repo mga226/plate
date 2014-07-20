@@ -2,7 +2,6 @@
 
 Flexible and extensible PHP templating and data structure.
 
-Plate allows 
 
 ## Sample Usage
 
@@ -31,7 +30,8 @@ $data = new Dataset(
 
 $parser = new Parser();
 
-$parser->setData($data);```
+$parser->setData($data);
+```
 
 You can avoid directly instantiating subclasses of the Datapoint class by just providing values, as below. The Dataset class will try to guess the most appropriate Datapoint type and will create the Datapoint for you.
 
@@ -82,7 +82,8 @@ First, instantiate your parser
 
 ```use Plate;
 
-$parser = new Parser();```
+$parser = new Parser();
+```
 
 ###Setting Data
 
