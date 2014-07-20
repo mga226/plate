@@ -1,12 +1,6 @@
 <?php
 
-require_once (__DIR__ . '/../vendor/symfony/class-loader/Symfony/Component/ClassLoader/UniversalClassLoader.php');
-
-use \Symfony\Component\ClassLoader\UniversalClassLoader;
-
-$loader = new UniversalClassLoader();
-$loader->registerNamespace('Plate', __DIR__ . '/..');
-$loader->register();
+require_once(__DIR__.'/../autoload.php');
 
 use Plate\Parser;
 use Plate\DatapointFactory;
