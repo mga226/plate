@@ -1,6 +1,6 @@
-# Plate: Object-Oriented Template Engine for PHP
+# Plate
 
-Flexible and extensible PHP templating and data structure.
+Object-Oriented Template Engine for PHP
 
 
 ## Sample Usage
@@ -75,49 +75,4 @@ $parser->setData(
 );
 ```
 
-
-
-
-First, instantiate your parser
-
-```use Plate;
-
-$parser = new Parser();
-```
-
-###Setting Data
-
-You can set data in a number of ways.
-
-####1. Create a Dataset object
-
-You can create a Dataset like this:
-
-
-
-// or you can specify the data types for each field
-
-$data = array(
-	'title' => new Datapoint\String('My Blog Post'),
-	'content' => new Datapoint\String('Lorem ipsum dolor est...'),
-	'date' => new Datapoint\Date('2014-06-01'),
-	'author' => array(
-		'name' => new Datapoint\String('Mike Acreman'),
-		'email' => new Datapoint\String('hi@mikeacreman.com')
-	)
-);
-
-
-// create a dataset
-
-$dataset = new Dataset($data);
-
-$plate = new Parser();
-$plate->setData($dataset);
-$plate->setTemplate('<h1>{title}</h1>');
-$plate->parse();
-
-$buffer = $plate->getBuffer();
-
-echo $buffer;
-```
+### Setting the template and running the parser
