@@ -6,7 +6,7 @@ namespace Plate;
  * the template string using the data provided.
  *
  * This is the main point of interaction with the Plate
- * library, and the only class the MUST be directly instantiated
+ * library, and the only class that MUST be directly instantiated
  * by the client.
  * 
  * @package Plate\Parser
