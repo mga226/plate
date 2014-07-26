@@ -5,5 +5,5 @@ require_once (__DIR__ . '/vendor/symfony/class-loader/Symfony/Component/ClassLoa
 use \Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
-$loader->registerNamespace('Plate', __DIR__ );
+$loader->registerNamespace('Plate', __DIR__.'/library' );
 $loader->register();
