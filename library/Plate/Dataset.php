@@ -74,7 +74,7 @@ class Dataset implements \ArrayAccess
     }
     
     /**
-     * Return either a datapoint or
+     * Return either a datapoint or the value returned by a "pseudodata" method.
      *
      * This method allows the client (and thus a template) to treat
      * "real" data and "pseudodata" the same way, without having to
