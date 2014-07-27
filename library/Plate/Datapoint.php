@@ -3,6 +3,23 @@ namespace Plate;
 
 use Plate\Datapoint\DatapointInterface;
 
+/**
+ * Datapoints are Plate's most granular pieces of data. Different
+ * implementations of DatapointInterface allow different types of
+ * data to:
+ * 
+ * - intepret template code appropriately
+ *   @see  ::processForTemplate()
+ *   
+ * - validate incoming data, ensuring it is well-formed for that type
+ *   @see  ::isValidValue()
+ *   
+ * - have its own "formatting methods", which morph the data in 
+ *   predefined ways.
+ *   @see  ::getFormatMethod()
+ *
+ *  @package  \Plate\Datapoint
+ */
 class Datapoint implements DatapointInterface
 {
     
@@ -109,15 +126,6 @@ class Datapoint implements DatapointInterface
     }
     
     /**
-     * Defines the naming convention for "format" methods
-     * @param  string $key
-     * @return string The name of the method associated with $key
-     */
-    protected function getFormatMethod($key) {
-        return 'fmt_' . $key;
-    }
-    
-    /**
      * "Formatting Methods."
      *
      * Datapoint classes may have "formatting methods." The point
@@ -148,7 +156,16 @@ class Datapoint implements DatapointInterface
      * @see  \Plate\Datapoint::getFormatMethod() defines how formatting methods are named.
      *
      */
-    
+
+    /**
+     * Defines the naming convention for "format" methods
+     * @param  string $key
+     * @return string The name of the method associated with $key
+     */
+    protected function getFormatMethod($key) {
+        return 'fmt_' . $key;
+    }
+        
     /**
      * An example of a "format" method.
      * @param  mixed $value  The output of ::getValue()
