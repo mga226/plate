@@ -3,20 +3,23 @@ namespace Plate;
 
 use Plate\Datapoint\DatapointInterface;
 use Plate\Datapoint\DatapointFactory;
+
 /**
  * Datapoints are Plate's most granular pieces of data. Different
  * implementations of DatapointInterface allow different types of
  * data to:
- * 
+ *
  * - intepret template code appropriately
  *   @see  ::processForTemplate()
- *   
+ *
  * - validate incoming data, ensuring it is well-formed for that type
  *   @see  ::isValidValue()
- *   
- * - have its own "formatting methods", which morph the data in 
+ *
+ * - have its own "formatting methods", which morph the data in
  *   predefined ways.
  *   @see  ::getFormatMethod()
+ *
+ *  @used-by  \Plate\Dataset
  *
  *  @package  \Plate\Datapoint
  */
@@ -39,10 +42,10 @@ class Datapoint implements DatapointInterface
     
     /**
      * Determines existence of a formatting method matching $format,
-     * @param  string $format  Defines which formatting method to call
-     * @param  array  $params  Aspirational! This isn't used yet.
-     * @return \Plate\Datapoint  The output, which will be fed back into the template parser.
-     * @see  \Plate\Directive\Data::run() which calls this method
+     * @param    string $format  Defines which formatting method to call
+     * @param    array  $params  Aspirational! This isn't used yet.
+     * @return   \Plate\Datapoint  The output, which will be fed back into the template parser.
+     * @used-by  \Plate\Directive\Data::run() which calls this method
      */
     final function getFormatted($format, $params = array()) {
         
@@ -156,7 +159,7 @@ class Datapoint implements DatapointInterface
      * @see  \Plate\Datapoint::getFormatMethod() defines how formatting methods are named.
      *
      */
-
+    
     /**
      * Defines the naming convention for "format" methods
      * @param  string $key
@@ -165,7 +168,7 @@ class Datapoint implements DatapointInterface
     protected function getFormatMethod($key) {
         return 'fmt_' . $key;
     }
-        
+    
     /**
      * An example of a "format" method.
      * @param  mixed $value  The output of ::getValue()

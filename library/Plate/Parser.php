@@ -31,7 +31,6 @@ class Parser
     /**
      * Contains a method called by preg_replace_callback()
      * @see  \Plate\Parser::doParse() 
-     *
      * @var  \Plate\RegexParsingHelper
      */
     protected $regexHelper;
@@ -97,6 +96,7 @@ class Parser
      * like Plate template tags. The regex callback function examines the
      * matched content and determines what to do with it.
      *
+     * @uses   \Plate\RegexParsingHelper 
      * @return $string The processed template.
      */
     protected function doParse() {

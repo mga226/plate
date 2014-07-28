@@ -6,8 +6,9 @@ namespace Plate;
  * text via preg_replace_callback(), while giving the
  * callback function access to relevant data and resources.
  *
- *
- * @package Plate\RegexParsingHelper
+ * @used-by \Plate\Parser::doParse()
+ * 
+ * @package \Plate\RegexParsingHelper
  */
 class RegexParsingHelper
 {
@@ -56,7 +57,7 @@ class RegexParsingHelper
      * captures are used to make examining results easier in the
      * callback.
      *
-     * @see  \Plate\RegexParsingHelper::run()
+     * @used-by  \Plate\RegexParsingHelper::run()
      *
      * @return string A regular expression matching any template code.
      */

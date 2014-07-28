@@ -3,32 +3,34 @@ namespace Plate;
 
 /**
  * Datasets are Plate's repositories of data. They:
- * 
+ *
  * - contain an array of \Plate\Datapoint objects
- * - can have "pseudodata" methods, which act exactly like real data but 
- *       generate their value on-demand, typically by processing the 
+ * - can have "pseudodata" methods, which act exactly like real data but
+ *       generate their value on-demand, typically by processing the
  *       existing data somehow.
  *       - pseudodata methods take the form _pseudo_{some_string}()
  * - implement ArrayAccess so they can be manipulated like arrays.
+ *
+ *
+ * @uses \Plate\Datapoint
  *
  * @package \Plate\Dataset
  */
 class Dataset implements \ArrayAccess
 {
+    
     /**
      * The dataset's data, an array containing objects of type \Plate\Datapoint.
      * @var array $data
      */
     var $data;
     
-
     function __construct($data = array()) {
         $this->setData($data);
     }
     
     /**
-     * @see \Plate\Dataset::setDatapoint - which this method calls in a loop
-     * 
+     * @used-by \Plate\Dataset::setDatapoint
      * @param Array $data
      */
     function setData(Array $data) {
@@ -41,7 +43,7 @@ class Dataset implements \ArrayAccess
      * Set a Datapoint.
      *
      * If the value provided is not a Datatype, use the DatapointFactory to convert.
-     * 
+     *
      * @param string $key
      * @param mixed $value
      * @return \Plate\Datapoint
@@ -127,41 +129,10 @@ class Dataset implements \ArrayAccess
         }
     }
     
+
     /**
-     * Convert a generic key into a pseudodata method name.
-     *
-     * If we want to change how pseudodata methods are named,
-     * we only need to change this method.
-     *
-     * @param  string $key
-     * @return string
-     */
-    protected function getPseudodataMethodName($key) {
-        return '_pseudo_' . $key;
-    }
-    
-    /**
-     * Call the "pseudodata method" for key $key.
-     *
-     * If the method does not return a Datapoint, use the
-     * DatapointFactory to convert.
-     *
-     * @param  string $key
-     * @return \Plate\Datapoint
-     */
-    protected function pseudodata($key) {
-        $val = call_user_func_array(array($this, $this->getPseudodataMethodName($key)), array());
-        
-        if (!($val instanceof Datapoint)) {
-            $val = Datapoint\DatapointFactory::create($val);
-        }
-        
-        return $val;
-    }
-    
-    /**
-     * ArrayAccess methods below, just providing an interface
-     * so the client can interact with
+     * ArrayAccess methods below, so you can pretend your Dataset
+     * is just an array. If you wanna.
      */
     
     public function offsetSet($key, $value) {
@@ -190,23 +161,53 @@ class Dataset implements \ArrayAccess
      * datapoints on a just-in-time basis for any data that
      * can be extracted from other data.
      *
-     *	Psuedodata methods take no parameters, and return:
+     * Psuedodata methods take no parameters, and return:
      *
      * @return \Plate\Datapoint|mixed
      *
      * If the returned value is not a Datapoint, the Dataset class
      * will use the DatapointFactory to convert it.
      *
-     * @see  \Plate\Dataset::pseudodata() which is responsible for all
-     *      calls to pseudodata methods.
+     * @used-by  \Plate\Dataset::pseudodata()
      *
      */
     
+
     /**
-     * Returns the number of fields.
+     * Call the "pseudodata method" for key $key.
      *
-     * Just an example of a pseudodata method.
+     * If the method does not return a Datapoint, use the
+     * DatapointFactory to convert.
      *
+     * @param  string $key
+     * @return \Plate\Datapoint
+     */
+    protected function pseudodata($key) {
+        $val = call_user_func_array(array($this, $this->getPseudodataMethodName($key)), array());
+        
+        if (!($val instanceof Datapoint)) {
+            $val = Datapoint\DatapointFactory::create($val);
+        }
+        
+        return $val;
+    }
+    
+    /**
+     * Convert a generic key into a pseudodata method name.
+     *
+     * If we want to change how pseudodata methods are named,
+     * we only need to change this method.
+     *
+     * @param  string $key
+     * @return string
+     */
+    protected function getPseudodataMethodName($key) {
+        return '_pseudo_' . $key;
+    }
+    
+
+    /**
+     * Example "pseudodata" method. Returns the number of fields.
      * @return int The number of fields in this Dataset.
      */
     public function _pseudo_numberOfFields() {

@@ -11,10 +11,10 @@ use Plate\Datapoint;
  */
 class Number extends Datapoint
 {
-	/**
-     * @param  mixed  $value Candidate for validation
-     * @return boolean
-     * @see    \Plate\Datapoint::isValidValue()
+    
+    /**
+     * @param  mixed  $value
+     * @see  \Plate\Datapoint::isValidValue()
      */
     static function isValidValue($value) {
         if (is_numeric($value)) {
