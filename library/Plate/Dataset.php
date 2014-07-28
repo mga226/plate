@@ -54,7 +54,7 @@ class Dataset implements \ArrayAccess
         }
         
         if (!($value instanceof Datapoint)) {
-            $value = DatapointFactory::create($value);
+            $value = Datapoint\DatapointFactory::create($value);
         }
         
         $this->data[$key] = $value;
@@ -153,7 +153,7 @@ class Dataset implements \ArrayAccess
         $val = call_user_func_array(array($this, $this->getPseudodataMethodName($key)), array());
         
         if (!($val instanceof Datapoint)) {
-            $val = DatapointFactory::create($val);
+            $val = Datapoint\DatapointFactory::create($val);
         }
         
         return $val;

@@ -3,7 +3,7 @@
 require_once(__DIR__.'/../autoload.php');
 
 use Plate\Parser;
-use Plate\DatapointFactory;
+use Plate\Datapoint\DatapointFactory;
 use Plate\Datapoint;
 
 class PlateTests extends PHPUnit_Framework_Testcase

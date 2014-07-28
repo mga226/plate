@@ -1,11 +1,12 @@
 <?php
-namespace Plate;
+namespace Plate\Datapoint;
+use Plate\Datapoint;
 
 /**
  * Factory to allow the easy converting of any input to the appropriate
  * native Datatype.
  * 
- * @package  \Plate\DatapointFactory
+ * @package  \Plate\Datapoint\DatapointFactory
  */
 class DatapointFactory
 {

@@ -2,7 +2,7 @@
 namespace Plate;
 
 use Plate\Datapoint\DatapointInterface;
-
+use Plate\Datapoint\DatapointFactory;
 /**
  * Datapoints are Plate's most granular pieces of data. Different
  * implementations of DatapointInterface allow different types of
