@@ -1,9 +1,19 @@
 <?php
 namespace Plate;
 
+/**
+ * Factory to allow the easy converting of any input to the appropriate
+ * native Datatype.
+ * 
+ * @package  \Plate\DatapointFactory
+ */
 class DatapointFactory
 {
-    
+    /**
+     * Guess the best Datapoint type for the value provided and return a Datapoint instance.
+     * @param  mixed $value
+     * @return \Plate\Datapoint
+     */
     static function create($value) {
         if ($value instanceof Datapoint) {
             return $value;
