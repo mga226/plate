@@ -3,9 +3,19 @@ namespace Plate\Datapoint;
 
 use Plate\Datapoint;
 
+/**
+ * String Datapoint.
+ * TODO: roll in appropriate formatting methods.
+ *
+ * @package \Plate\Datapoint\String
+ */
 class String extends Datapoint
 {
-    
+    /**
+     * @param  mixed  $value Candidate for validation
+     * @return boolean
+     * @see    \Plate\Datapoint::isValidValue()
+     */
     static function isValidValue($value) {
         if (is_string($value)) {
             return TRUE;
